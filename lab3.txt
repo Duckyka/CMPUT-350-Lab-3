@@ -1,6 +1,21 @@
 1. What is a benefit (besides aliasing) of our `SharedPtr<T>` directly storing a “stored pointer” (we could always just
    access it through the control block, if we're not aliasing)?
+      Not only is this much faster to retrieve, but there is much less risk of losing the stored pointer (or having a dangling pointer) 
+      as control blocks are moved between pointers when moving or copying. Additionally, it is safer and faster to stay contained 
+      in one scope and class than to constantly reach out to others for information. 
+
 2. What is a disadvantage of having the stored pointer (instead of going through the control block)?
+      The disadvantage of keeping the stored pointer reference is the space and time as these pointers to potentially large memory blocks
+      are expensive to make and store. However, they are advantagous to use and this is the upside to using them, while going through the control block
+      might turn out to be more expensive depending on how often that memory is going to be used or called in the future. 
+
 3. From a system design/architecture perspective, what disadvantages are there to using shared pointers?
+      Design wise, shared pointers can make a system or build more complicated and potentially introduce room for error. With more pointers, and pointers to pointers, 
+      the risk of creating redundent or dangling pointers is higher. Additionally, it may be harder to update or maintain a framework, or even transform
+      it into something else entirely as all of the pointers must be managed properly. 
+
 4. From a performance perspective, what disadvantages there are to using shared pointers (say, versus a unique pointer
    or raw pointer)?
+      Shared pointers are disadvantagous performance wise regarding cost and space. Shared pointers have several pointers they keep track of, all of which will 
+      need time and space to initialize and be stored. Additionally, they would all need to be destructed and dereferenced 
+      as opposed to unique pointers, which only have 1 pointer. 
